@@ -117,6 +117,13 @@ def delete_person(id):
             return {"message": "Person deleted successfully"}, 200
     return {"message": "Person not found"}, 404
 
+@my_app.route("/count")
+def count():
+    try:
+        return {"count": len(data)}, 200
+    except NameError:
+        return {"message": "Data is not defined"}, 500
+
 
 def main():
     my_app.run(debug=True)
