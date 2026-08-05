@@ -102,6 +102,22 @@ def name_search():
 
     return {"message": "No person found with that first name"}, 404
 
+@my_app.route("/person/<uuid:id>")
+def find_by_uuid(id):
+    for person in data:
+        if person["id"] == str(id):
+            return person
+    return {"message": "Person not found"}, 404
+
+@my_app.route("/person/<uuid:id>", methods=["DELETE"])
+def delete_person(id):
+    for person in data:
+        if person["id"] == str(id):
+            data.remove(person)
+            return {"message": "Person deleted successfully"}, 200
+    return {"message": "Person not found"}, 404
+
+
 def main():
     my_app.run(debug=True)
 
