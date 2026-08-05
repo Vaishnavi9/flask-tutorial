@@ -1,4 +1,4 @@
-from flask import Flask, make_response
+from flask import Flask, make_response, request
 
 my_app = Flask("My first Application")
 
@@ -86,6 +86,21 @@ def get_data():
     except NameError:
         return {"message": "Data is not defined"}, 500
 
+@my_app.route("/name_search")
+def name_search():
+    query = request.args.get('q')
+
+    if query is None:
+        return {"message": "Query parameter 'q' is required"}, 400
+
+    if query.strip() == "" or query.isdigit():
+        return {"message": "Query parameter 'q' cannot be empty or numeric"}, 400
+
+    for person in data:
+        if query.lower() in person["first_name"].lower():
+            return {"data": person}, 200
+
+    return {"message": "No person found with that first name"}, 404
 
 def main():
     my_app.run(debug=True)
