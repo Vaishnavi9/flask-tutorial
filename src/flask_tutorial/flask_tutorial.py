@@ -124,6 +124,27 @@ def count():
     except NameError:
         return {"message": "Data is not defined"}, 500
 
+@my_app.route("/person", methods=['POST'])
+def create_person():
+    new_person = request.get_json()
+
+    # Check if the JSON data is empty or None
+    if not new_person:
+        # Return a JSON response indicating that the request data is invalid
+        # with a status code of 422 (Unprocessable Entity)
+        return {"message": "Invalid input, no data provided"}, 422
+
+    # Proceed with further processing of 'new_person', such as adding it to a database
+    # or validating its contents before saving it
+
+    # Assuming the processing is successful, return the person's id with status code 200
+    return {"message": f"{new_person['id']}"}, 200
+
+
+@my_app.errorhandler(404)
+def api_not_found(error):
+    return {"message": "API not found"}, 404
+
 
 def main():
     my_app.run(debug=True)
