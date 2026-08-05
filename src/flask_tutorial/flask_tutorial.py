@@ -1,4 +1,4 @@
-from flask import Flask, make_response, request
+from flask import Flask, app, make_response, request
 
 my_app = Flask("My first Application")
 
@@ -144,6 +144,16 @@ def create_person():
 @my_app.errorhandler(404)
 def api_not_found(error):
     return {"message": "API not found"}, 404
+
+@my_app.errorhandler(Exception)
+def handle_exception(e):
+    return {"message": str(e)}, 500
+
+@my_app.route("/test500")
+def test500():
+    raise Exception("Forced exception for testing")
+
+
 
 
 def main():
